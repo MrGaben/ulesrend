@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sulfrulic acid</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+    <link rel="stylesheet" href="as_I.css">
+</head>
+<body>
+    <h1>Tanterem</h1>  
+    <input type="file" id="fileInput" accept=".csv">
+
+    <h1>Osztály</h1>
+    <input type="file" id="fileInput1" accept=".csv">
+    <div id="content"></div>
+
+  <div id="right">
+
+  </div>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const fileInput1 = document.getElementById("fileInput1");
+        const contentDiv = document.getElementById("content");
+
+        fileInput.addEventListener("change", function () {
+            let file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+            
+                reader.onload = function (e) {
+                    const content = e.target.result;
+                    var preText = content;
+                    console.log(preText);
+                    
+                    // Előző split megtartása
+                    var preTextArray = preText.split(';');
+                    console.log(preTextArray);
+
+                    // Töröld a div tartalmát, hogy frissítsd
+                    contentDiv.innerHTML = '';
+            
+                    for (let i = 0; i < preTextArray.length; i++) {
+                        if (preTextArray[i].trim() === "0") {
+                            // Adj hozzá egy új div-et a "content" div-hez
+                            var newDiv = document.createElement("div");
+                            newDiv.textContent = "k";
+                            newDiv.style.backgroundColor = "lightblue";
+                            newDiv.style.display = "inline-block";
+                            newDiv.style.margin = "10px";
+                            contentDiv.appendChild(newDiv);
+                        } else if (preTextArray[i].trim() === "1") {
+                            // Adj hozzá egy új div-et a "content" div-hez
+                            var newDiv = document.createElement("br");
+                            newDiv.textContent = "k";
+                            newDiv.style.backgroundColor = "lightblue";
+                            newDiv.style.display = "inline-block";
+                            newDiv.style.margin = "10px";
+                            contentDiv.appendChild(newDiv);
+                        }
+                    }
+                };
+            
+                reader.readAsText(file);
+            }
+        });
+        const nev = document.getElementById("right");
+        fileInput1.addEventListener("change", function() {
+            let names = fileInput1.files[0];
+            
+            if (names) {
+                const reader = new FileReader();
+            
+                reader.onload = function (e) {
+                    const content = e.target.result;
+                    var preText = content;
+                    console.log(preText);
+                    
+                    // Előző split megtartása
+                    var preTextArray = preText.split(';');
+                    console.log(preTextArray);
+
+                    // Töröld a div tartalmát, hogy frissítsd
+                    contentDiv.innerHTML = '';
+            
+                    for (let i = 0; i < preTextArray.length; i++) {
+                        if (preTextArray[i].trim() != "") {
+                            var newli = document.createElement("div");
+                            newli.classList.add("list");
+                            newli.setAttribute("draggable", "true");
+                            newli.textContent = preTextArray[i];
+                            nev.appendChild(newli);
+                            
+                        }
+                    }
+                };
+            
+                reader.readAsText(names);
+            }
+        })
+    </script>
+</body>
+</html>
