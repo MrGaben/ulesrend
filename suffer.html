@@ -6,24 +6,75 @@
     <title>Sulfrulic acid</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     
     <link rel="stylesheet" href="as_I.css">
+
 </head>
 <body>
-    <h1>Tanterem</h1>  
-    <input type="file" id="fileInput" accept=".csv">
 
-    <h1>Osztály</h1>
-    <input type="file" id="fileInput1" accept=".csv">
-    <div id="content"></div>
+            <div class="area" >
+                <ul class="circles">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <h1>Osztály</h1>
+                        <input type="file" id="fileInput1" accept=".csv">
+                        <p>Elsőként adja meg az osztály tagjainak neveit pontosvesszővel (;) elválasztva és a fájl formátuma legyen .csv fájl!</p>
+                        <br>
 
-  <div id="right">
-
-  </div>
-
+                        <h1>Tanterem</h1>  
+                        <input type="file" id="fileInput" accept=".csv">
+                        <p>Másodszor adja meg a termet, ahol szabad hely van oda írjon egy nullát, a folyosót null-al jelezze, és végül ha egy sor végére írt írjon egy egyes pontosvesszőt (1;) ezzel leszárva a sort!</p>
+                        <p>Fontos hogy az utolsó sor végére ne tegyen se 1 se pontosvesszőt!</p>
+                        <br>
+                        <br>
+                        <br>
+                        <div id="content"></div>
+                            <div id="left">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+        </div >
     <script>
+        function runScriptAgain() {
+            let lists = document.getElementsByClassName("list");
+            let leftBox = document.getElementById("left");
+    
+            for (list of lists) {
+                list.addEventListener("dragstart", function (e) {
+                    let selected = e.target;
+                    let rightBoxes = document.getElementsByClassName("right");
+    
+                    for (rightBox of rightBoxes) {
+                        rightBox.addEventListener("dragover", function (e) {
+                            e.preventDefault();
+                        });
+                        rightBox.addEventListener("drop", function (e) {
+                            this.appendChild(selected);
+                            selected = null;
+                        });
+                    }
+                    leftBox.addEventListener("dragover", function (e) {
+                        e.preventDefault();
+                    });
+                    leftBox.addEventListener("drop", function (e) {
+                        this.appendChild(selected);
+                        selected = null;
+                    });
+                });
+            }
+        }
+    
+            
+
         const fileInput = document.getElementById("fileInput");
         const fileInput1 = document.getElementById("fileInput1");
         const contentDiv = document.getElementById("content");
@@ -39,38 +90,51 @@
                     var preText = content;
                     console.log(preText);
                     
-                    // Előző split megtartása
+
                     var preTextArray = preText.split(';');
                     console.log(preTextArray);
 
-                    // Töröld a div tartalmát, hogy frissítsd
+
                     contentDiv.innerHTML = '';
-            
+                    let hely = 1;
                     for (let i = 0; i < preTextArray.length; i++) {
                         if (preTextArray[i].trim() === "0") {
-                            // Adj hozzá egy új div-et a "content" div-hez
+                            
+
                             var newDiv = document.createElement("div");
-                            newDiv.textContent = "k";
-                            newDiv.style.backgroundColor = "lightblue";
+                            newDiv.textContent = hely+".  ülés";
+                            newDiv.style.backgroundColor = "grey";
                             newDiv.style.display = "inline-block";
-                            newDiv.style.margin = "10px";
+                            newDiv.style.margin = "15px";
+                            newDiv.style.padding = "75px";
+                            newDiv.style.border = "2px solid white";
+                            newDiv.style.position = "relative";
+                            
+                            newDiv.setAttribute("id","_"+hely);
+                            newDiv.classList.add("right");
+                            hely++;
                             contentDiv.appendChild(newDiv);
                         } else if (preTextArray[i].trim() === "1") {
-                            // Adj hozzá egy új div-et a "content" div-hez
+
                             var newDiv = document.createElement("br");
-                            newDiv.textContent = "k";
-                            newDiv.style.backgroundColor = "lightblue";
+
+                            contentDiv.appendChild(newDiv);
+                        }
+                        else if (preTextArray[i].trim() === "null") {
+
+                            var newDiv = document.createElement("div");
+                            newDiv.style.padding = "30px";
                             newDiv.style.display = "inline-block";
                             newDiv.style.margin = "10px";
                             contentDiv.appendChild(newDiv);
                         }
+                        runScriptAgain();
                     }
                 };
-            
                 reader.readAsText(file);
             }
         });
-        const nev = document.getElementById("right");
+        const nev = document.getElementById("left");
         fileInput1.addEventListener("change", function() {
             let names = fileInput1.files[0];
             
@@ -82,28 +146,35 @@
                     var preText = content;
                     console.log(preText);
                     
-                    // Előző split megtartása
+
                     var preTextArray = preText.split(';');
                     console.log(preTextArray);
 
-                    // Töröld a div tartalmát, hogy frissítsd
+
                     contentDiv.innerHTML = '';
             
                     for (let i = 0; i < preTextArray.length; i++) {
                         if (preTextArray[i].trim() != "") {
-                            var newli = document.createElement("div");
+                            var newli = document.createElement("p");
                             newli.classList.add("list");
                             newli.setAttribute("draggable", "true");
+                            newli.style.position = "absolute";
                             newli.textContent = preTextArray[i];
+                            var br = document.createElement("br");
                             nev.appendChild(newli);
-                            
+                            nev.appendChild(br);
                         }
                     }
+                    runScriptAgain();
                 };
             
                 reader.readAsText(names);
             }
-        })
+        })  
+
+            
+            
     </script>
 </body>
 </html>
+
