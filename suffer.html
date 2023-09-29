@@ -15,35 +15,42 @@
 </head>
 <body>
 
-            <div class="area" >
-                <ul class="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <h1>Osztály</h1>
-                        <input type="file" id="fileInput1" accept=".csv">
-                        <p>Elsőként adja meg az osztály tagjainak neveit pontosvesszővel (;) elválasztva és a fájl formátuma legyen .csv fájl!</p>
-                        <br>
 
-                        <h1>Tanterem</h1>  
-                        <input type="file" id="fileInput" accept=".csv">
-                        <p>Másodszor adja meg a termet, ahol szabad hely van oda írjon egy nullát, a folyosót null-al jelezze, és végül ha egy sor végére írt írjon egy egyes pontosvesszőt (1;) ezzel leszárva a sort!</p>
-                        <p>Fontos hogy az utolsó sor végére ne tegyen se 1 se pontosvesszőt!</p>
-                        <br>
-                        <br>
-                        <br>
-                        <div id="content"></div>
-                            <div id="left">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>
-        </div >
+
+
+
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        
+        
+            <h1 style="text-align: center;">Embörs</h1>
+            <input type="file" id="fileInput1" accept=".csv" onchange="handleFileInput(this)">
+            <p id="classInputDescription">Elsőként adja meg az osztály tagjainak neveit pontosvesszővel (;) elválasztva és a fájl formátuma legyen .csv fájl!</p>
+            <br><div id="left"></div>
+            
+            <h1 style="text-align: center;">Tanterem</h1>
+            <input type="file" id="fileInput" accept=".csv" onchange="handleFileInput(this)">
+            <p id="roomInputDescription">Másodszor adja meg a termet, ahol szabad hely van oda írjon egy nullát, a folyosót null-al jelezze, és végül ha egy sor végére írt írjon egy egyes pontosvesszőt (1;) ezzel leszárva a sort! <br> Fontos hogy az utolsó sor végére ne tegyen se 1 se pontosvesszőt!</p>
+            <div id="content"></div>
+            <br>
+            <br>
+            <br>
+            
+                                
+
     <script>
+        function handleFileInput(input) {
+            const descriptionId = input.id === "fileInput1" ? "classInputDescription" : "roomInputDescription";
+            const description = document.getElementById(descriptionId);
+            
+            if (input.files.length > 0) {
+                input.style.display = "none";
+                description.style.display = "none";
+            }
+        }
+        
         function runScriptAgain() {
             let lists = document.getElementsByClassName("list");
             let leftBox = document.getElementById("left");
@@ -102,14 +109,20 @@
                             
 
                             var newDiv = document.createElement("div");
-                            newDiv.textContent = hely+".  ülés";
+                            //newDiv.textContent = hely+".  ülés";
                             newDiv.style.backgroundColor = "grey";
                             newDiv.style.display = "inline-block";
                             newDiv.style.margin = "15px";
-                            newDiv.style.padding = "75px";
+                            newDiv.style.paddingTop = "20px";
                             newDiv.style.border = "2px solid white";
                             newDiv.style.position = "relative";
-                            
+                            newDiv.style.alignItems = "left";
+                            newDiv.style.overflow = "auto";
+                            newDiv.style.overflowY = "auto";
+                            newDiv.style.maxHeight = "300px";  
+                            newDiv.style.paddingLeft = "150px"; 
+                            newDiv.style.paddingBottom = "20px";
+                            newDiv.style.paddingRight = "150px";
                             newDiv.setAttribute("id","_"+hely);
                             newDiv.classList.add("right");
                             hely++;
@@ -126,6 +139,7 @@
                             newDiv.style.padding = "30px";
                             newDiv.style.display = "inline-block";
                             newDiv.style.margin = "10px";
+
                             contentDiv.appendChild(newDiv);
                         }
                         runScriptAgain();
@@ -157,8 +171,10 @@
                         if (preTextArray[i].trim() != "") {
                             var newli = document.createElement("p");
                             newli.classList.add("list");
-                            newli.setAttribute("draggable", "true");
-                            newli.style.position = "absolute";
+                            newli.setAttribute("draggable", "true");;
+                            //newli.style.position = "absolute";
+                            newli.style.padding = "0px";
+                            newli.style.margin = "auto";
                             newli.textContent = preTextArray[i];
                             var br = document.createElement("br");
                             nev.appendChild(newli);
