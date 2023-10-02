@@ -38,7 +38,6 @@
             <br>
             <br>
 
-            <input type="text" name="csoport" id="csoport" placeholder="Írja be a csoport nevét.">
             <button id="saveButton">Mentés</button>
             <button id="loadButton">Betöltés</button>
                           
@@ -56,6 +55,8 @@
         
 // Deklaráljuk a rightBoxes változót a globális szinten
 let rightBoxes;
+let p = document.getElementById("lists");
+let divContains_P = document.getElementById('left').contains(p);
 
 function runScriptAgain() {
     let lists = document.getElementsByClassName("list");
@@ -163,6 +164,22 @@ function runScriptAgain() {
 
                             contentDiv.appendChild(newDiv);
                         }
+                        else if (preTextArray[i].trim() === "2")
+                        {
+                            var newDiv = document.createElement("div");
+                            newDiv.style.backgroundColor = "#0c0d13";
+                            newDiv.style.display = "inline-block";  
+                            newDiv.style.margin = "15px";
+                            newDiv.style.paddingTop = "20px";
+                            newDiv.style.visibility = "hidden";
+                            newDiv.style.position = "relative";
+                            newDiv.style.maxHeight = "300px";  
+                            newDiv.style.paddingLeft = "150px"; 
+                            newDiv.style.paddingBottom = "20px";
+                            newDiv.style.paddingRight = "150px";
+                            newDiv.classList.add("right");
+                            contentDiv.appendChild(newDiv);
+                        }
                         runScriptAgain();
                     }
                 };
@@ -229,15 +246,35 @@ saveButton.addEventListener("click", function () {
     const blob = new Blob([csvData], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
-    let csoportnev = document.getElementById("fileInput1").value;
-    a.download = csoportnev+".csv";
-    console.log(csoportnev);
+    
+    // Elmentjük a fileInput1 és fileInput értékeit változókba
+    const fileInput1Value = document.getElementById("fileInput1").value;
+    const fileInputValue = document.getElementById("fileInput").value;
+    
+    // Majd ezen a változón hajtjuk végre a split műveleteket
+    const fasz = fileInput1Value.split("_");
+    const fasz2 = fileInputValue.split("_");
+    
+    // Így az "idiot" változóban lesz a fájl neve
+    const idiot = fasz[0].split("\\");
+    const idiot2 = fasz2[0].split("\\");
+    
+    // A megfelelő neveket a fájlnevekbe helyezzük
+    const csoportnev = idiot[2].split(".")[0];
+    const teremnev = idiot2[2].split(".")[0];
+    
+    // A letöltött fájl neve a csoport és terem nevek alapján generálódik
+    a.download = csoportnev + "_" + teremnev + ".csv";
+    
     document.body.appendChild(a);
+    a.href = url;
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 });
+
+
+
 
 
 // Betöltés gomb eseménykezelője
