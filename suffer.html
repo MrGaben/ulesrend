@@ -37,8 +37,11 @@
             <br>
             <br>
             <br>
-            
-                                
+
+            <input type="text" name="csoport" id="csoport" placeholder="Írja be a csoport nevét.">
+            <button id="saveButton">Mentés</button>
+            <button id="loadButton">Betöltés</button>
+                          
 
     <script>
         function handleFileInput(input) {
@@ -51,35 +54,53 @@
             }
         }
         
-        function runScriptAgain() {
-            let lists = document.getElementsByClassName("list");
-            let leftBox = document.getElementById("left");
-    
-            for (list of lists) {
-                list.addEventListener("dragstart", function (e) {
-                    let selected = e.target;
-                    let rightBoxes = document.getElementsByClassName("right");
-    
-                    for (rightBox of rightBoxes) {
-                        rightBox.addEventListener("dragover", function (e) {
-                            e.preventDefault();
-                        });
-                        rightBox.addEventListener("drop", function (e) {
-                            this.appendChild(selected);
-                            selected = null;
-                        });
-                    }
-                    leftBox.addEventListener("dragover", function (e) {
-                        e.preventDefault();
-                    });
-                    leftBox.addEventListener("drop", function (e) {
+// Deklaráljuk a rightBoxes változót a globális szinten
+let rightBoxes;
+
+function runScriptAgain() {
+    let lists = document.getElementsByClassName("list");
+    let leftBox = document.getElementById("left");
+    rightBoxes = document.getElementsByClassName("right");
+
+    // Betöltjük a korábban mentett állapotot a localStorage-ból
+    for (let i = 0; i < rightBoxes.length; i++) {
+        const savedData = localStorage.getItem("rightBox_" + i);
+        if (savedData) {
+            rightBoxes[i].innerHTML = savedData;
+        }
+    }
+
+    for (list of lists) {
+        list.addEventListener("dragstart", function (e) {
+            let selected = e.target;
+
+            for (rightBox of rightBoxes) {
+                rightBox.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                });
+                rightBox.addEventListener("drop", function (e) {
+                    if (this.childElementCount === 0) {
                         this.appendChild(selected);
-                        selected = null;
-                    });
+                    }
+                    selected = null;
                 });
             }
-        }
-    
+
+            leftBox.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            });
+            leftBox.addEventListener("drop", function (e) {
+                if (this.childElementCount === 0) {
+                    this.appendChild(selected);
+                }
+                selected = null;
+            });
+        });
+    }
+}
+
+// ...
+
             
 
         const fileInput = document.getElementById("fileInput");
@@ -188,7 +209,68 @@
             }
         })  
 
-            
+            // ...
+
+// Gombok elérése
+const saveButton = document.getElementById("saveButton");
+const loadButton = document.getElementById("loadButton");
+
+// Mentés gomb eseménykezelője
+saveButton.addEventListener("click", function () {
+    const rightBoxes = document.getElementsByClassName("right");
+    const dataToSave = [];
+
+    for (let i = 0; i < rightBoxes.length; i++) {
+        const divData = rightBoxes[i].innerHTML;
+        dataToSave.push(divData);
+    }
+
+    const csvData = dataToSave.join('\n');
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    let csoportnev = document.getElementById("fileInput1").value;
+    a.download = csoportnev+".csv";
+    console.log(csoportnev);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+
+// Betöltés gomb eseménykezelője
+loadButton.addEventListener("click", function () {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".csv";
+    fileInput.addEventListener("change", function () {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const csvData = e.target.result;
+                const dataToLoad = csvData.split('\n');
+
+                for (let i = 0; i < rightBoxes.length; i++) {
+                    const divData = dataToLoad[i];
+                    if (divData) {
+                        rightBoxes[i].innerHTML = divData;
+                    }
+                }
+                // Futtatjuk újra a runScriptAgain függvényt a betöltés után
+                runScriptAgain();
+            };
+            reader.readAsText(file);
+        }
+    });
+    fileInput.click();
+});
+
+
+// ...
+
             
     </script>
 </body>
