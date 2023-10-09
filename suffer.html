@@ -26,6 +26,7 @@
         
         
             <h1 style="text-align: center;">Embörs</h1>
+
             <input type="file" id="fileInput1" accept=".csv" onchange="handleFileInput(this)">
             <p id="classInputDescription">Elsőként adja meg az osztály tagjainak neveit pontosvesszővel (;) elválasztva és a fájl formátuma legyen .csv fájl!</p>
             <br><div id="left"></div>
@@ -37,9 +38,14 @@
             <br>
             <br>
             <br>
+            <style>
 
-            <button id="saveButton">Mentés</button>
-            <button id="loadButton">Betöltés</button>
+            </style>
+        </head>
+
+
+            <button id="saveButton" type="button" class="btn btn-outline-dark btn-light">Mentés</button>
+            <button id="loadButton" type="button" class="btn btn-outline-dark btn-light">Betöltés</button>
                           
 
     <script>
@@ -74,7 +80,6 @@ function runScriptAgain() {
     for (list of lists) {
         list.addEventListener("dragstart", function (e) {
             let selected = e.target;
-
             for (rightBox of rightBoxes) {
                 rightBox.addEventListener("dragover", function (e) {
                     e.preventDefault();
@@ -128,23 +133,20 @@ function runScriptAgain() {
                     let hely = 1;
                     for (let i = 0; i < preTextArray.length; i++) {
                         if (preTextArray[i].trim() === "0") {
-                            
-
                             var newDiv = document.createElement("div");
-                            //newDiv.textContent = hely+".  ülés";
+                            newDiv.textContent = "üres";
+                            newDiv.style.color = "grey";
+                            newDiv.style.alignSelf = "center"
                             newDiv.style.backgroundColor = "grey";
                             newDiv.style.display = "inline-block";
                             newDiv.style.margin = "15px";
-                            newDiv.style.paddingTop = "20px";
                             newDiv.style.border = "2px solid white";
                             newDiv.style.position = "relative";
-                            newDiv.style.alignItems = "left";
                             newDiv.style.overflow = "auto";
                             newDiv.style.overflowY = "auto";
-                            newDiv.style.maxHeight = "300px";  
-                            newDiv.style.paddingLeft = "150px"; 
-                            newDiv.style.paddingBottom = "20px";
-                            newDiv.style.paddingRight = "150px";
+                            newDiv.style.maxHeight = "300px";
+                            newDiv.style.width = "17.48%";
+                            newDiv.style.justifyContent = "center";
                             newDiv.setAttribute("id","_"+hely);
                             newDiv.classList.add("right");
                             hely++;

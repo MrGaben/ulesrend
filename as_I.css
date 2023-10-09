@@ -15,6 +15,7 @@ div {
     border-style: solid;
     border: 10px;
     overflow: auto;
+
 }
 *{
     margin: 0;
@@ -70,6 +71,7 @@ body{
     border: 1px solid black;
     padding-left: 100px;
     padding-right: 100px;
+
 }
 
 * {
@@ -164,5 +166,9 @@ body{
   }
 
 body {
-    overflow-y: auto; /* Görgetés engedélyezése függőlegesen */
+    overflow-y: auto; 
+}
+div{
+  height: auto;
+  width: auto;
 }
