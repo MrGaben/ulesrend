@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sulfrulic acid</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+    <link rel="stylesheet" href="diak_tanterem-style.css">
+
+</head>
+<body>
+
+
+    <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+
+        
+            <h1 style="text-align: center;">Diákok</h1>
+            <p id="classInputDescription">Válassza ki a diákok csoportnevét a listából</p>
+            <select name="osztalyok/csop" id="osztalyok/csop" style="float:left;" onchange="osztalyok()">
+                <option id="osztalyok/csop" selected disabled>Válassza ki a osztályt/csoportot!</option>
+                <option value="12SZF1">12SZF1</option>
+            </select>
+
+            <br><div id="left"></div>
+            
+            <h1 style="text-align: center;">Tanterem</h1>
+            <p id="roomInputDescription">Válassza ki a megfelelő termet!</p>
+            <p>Betöltés esetén válassza ki a betöltenő termet először és aztán válassaz ki a betölteni kÍvánt fájlt!</p>
+            <select name="termek" id="termek" style="float:left;" onchange="teremgen()">
+                <option id="termek" selected disabled>Válasszon termet!</option>
+                <option value="SZT1">SZT1</option>
+                <option value="SZT2">SZT2</option>
+            </select>
+            
+            <br>
+            <br>    
+            <div class="line"></div>
+            <div id="content"></div>
+            <br>
+            <br>
+            <br>
+
+
+
+            <button id="saveButton" type="button" class="btn btn-outline-dark btn-light">Mentés</button>
+            <button id="loadButton" type="button" class="btn btn-outline-dark btn-light">Betöltés</button>
+                          
+
+    <script>
+        function teremgen(){
+        $(function newfile(){
+            if(document.getElementById('termek').value != null){
+                let teremnev = document.getElementById('termek').value 
+            $.ajax({
+                
+                url: teremnev+".csv", 
+                async: false,   
+                cache: false,   
+                dataType: "text",  
+                success: function( data, textStatus, jqXHR ) {
+                    var resourceContent = data;
+                    var preText = resourceContent;
+                    var preTextArray = preText.split(';');
+
+                    let hely = 1;
+                    for (let i = 0; i < preTextArray.length; i++) {
+                        if (preTextArray[i].trim() === "0") {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                            newDiv.textContent = " ";
+                            newDiv.setAttribute("id","_"+hely);
+                            newDiv.classList.add("right");
+                            hely++;
+                            contentDiv.appendChild(newDiv);
+                        } else if (preTextArray[i].trim() === "1") {
+
+                            var newDiv = document.createElement("br");
+
+                            contentDiv.appendChild(newDiv);
+                        }
+                        else if (preTextArray[i].trim() === "null") {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                            newDiv.style.padding = "30px";
+                            newDiv.style.display = "inline-block";
+                            newDiv.style.margin = "10px";
+
+                            contentDiv.appendChild(newDiv);
+                        }
+                        else if (preTextArray[i].trim() === "2")
+                        {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                            newDiv.style.backgroundColor = "#0c0d13";
+                            newDiv.style.display = "inline-block";  
+                            newDiv.style.margin = "15px";
+                            newDiv.style.paddingTop = "20px";
+                            newDiv.style.visibility = "hidden";
+                            newDiv.style.position = "relative";
+                            newDiv.style.maxHeight = "300px";  
+                            newDiv.style.paddingLeft = "150px"; 
+                            newDiv.style.paddingBottom = "20px";
+                            newDiv.style.paddingRight = "150px";
+                            newDiv.classList.add("right");
+                            contentDiv.appendChild(newDiv);
+                        }
+                        runScriptAgain();
+                    }
+                }
+
+            }
+        );
+            }
+        });
+        };
+        function osztalyok(){
+            $(function newfile(){
+                if(document.getElementById('osztalyok/csop').value != null){
+                    let osztaly = document.getElementById('osztalyok/csop').value 
+                $.ajax({
+                    
+                    url: osztaly+".csv", 
+                    async: false,   
+                    cache: false,   
+                    dataType: "text",  
+                    success: function( data, textStatus, jqXHR ) {
+                        var resourceContent = data;
+                        var preText = resourceContent;
+                        var preTextArray = preText.split(';');
+                        for (let i = 0; i < preTextArray.length; i++) {
+                            if (preTextArray[i].trim() != "") {
+                                nev = document.getElementById("left")
+                                var newli = document.createElement("p");
+                                newli.classList.add("list");
+                                newli.setAttribute("draggable", "true");;
+                                //newli.style.position = "absolute";
+                                newli.style.paddingLeft = "62px";
+                                newli.style.textAlign = "center";
+                                newli.style.margin = "auto";
+                                newli.style.width = "auto";
+                                newli.textContent = preTextArray[i];
+                                var br = document.createElement("br");
+                                nev.appendChild(newli);
+                                nev.appendChild(br);
+                            }
+                        }
+                        runScriptAgain();
+                    }
+    
+                }
+            );
+                }
+            });
+            };
+
+
+        function handleFileInput(input) {
+            const descriptionId = input.id === "fileInput1" ? "classInputDescription" : "roomInputDescription";
+            const description = document.getElementById(descriptionId);
+            
+            if (input.files.length > 0) {
+                input.style.display = "none";
+                description.style.display = "none";
+            }
+        }
+        
+
+let rightBoxes;
+let p = document.getElementById("lists");
+let divContains_P = document.getElementById('left').contains(p);
+
+function runScriptAgain() {
+    let lists = document.getElementsByClassName("list");
+    let leftBox = document.getElementById("left");
+    rightBoxes = document.getElementsByClassName("right");
+
+    for (let i = 0; i < rightBoxes.length; i++) {
+        const savedData = localStorage.getItem("rightBox_" + i);
+        if (savedData) {
+            rightBoxes[i].innerHTML = savedData;
+        }
+    }
+
+    for (list of lists) {
+        list.addEventListener("dragstart", function (e) {
+            let selected = e.target;
+            for (rightBox of rightBoxes) {
+                rightBox.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                });
+                rightBox.addEventListener("drop", function (e) {
+                    if (this.childElementCount === 0) {
+                        this.appendChild(selected);
+                    }
+                    selected = null;
+                });
+            }
+
+            leftBox.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            });
+            leftBox.addEventListener("drop", function (e) {
+                if (this.childElementCount === 0) {
+                    this.appendChild(selected);
+                }
+                selected = null;
+            });
+        });
+    }
+}
+
+
+const saveButton = document.getElementById("saveButton");
+const loadButton = document.getElementById("loadButton");
+
+
+saveButton.addEventListener("click", function () {
+    const rightBoxes = document.getElementsByClassName("right");
+    const dataToSave = [];
+
+    for (let i = 0; i < rightBoxes.length; i++) {
+        const divData = rightBoxes[i].innerHTML;
+        dataToSave.push(divData);
+    }
+
+    const csvData = dataToSave.join('\n');
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    
+
+    const fileInput1Value = document.getElementById("termek").value;
+    const fileInputValue = document.getElementById("osztalyok/csop").value;
+    
+
+
+
+    const csoportnev = fileInput1Value
+    const teremnev = fileInputValue
+    
+
+    a.download = csoportnev + "_" + teremnev + ".csv";
+    
+    document.body.appendChild(a);
+    a.href = url;
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+
+
+
+loadButton.addEventListener("click", function () {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".csv";
+    fileInput.addEventListener("change", function () {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const csvData = e.target.result;
+                const dataToLoad = csvData.split('\n');
+
+                for (let i = 0; i < rightBoxes.length; i++) {
+                    const divData = dataToLoad[i];
+                    if (divData) {
+                        rightBoxes[i].innerHTML = divData;
+                    }
+                }
+
+                runScriptAgain();
+            };
+            reader.readAsText(file);
+        }
+    });
+    fileInput.click();
+});
+        
+
+
+            
+    </script>
+</body>
+</html>
