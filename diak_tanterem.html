@@ -19,9 +19,10 @@
     <div class="lines">
         <div class="line"></div>
         <div class="line"></div>
-
+<br><br>
         
-            <h1 style="text-align: center;">Diákok</h1>
+            <p style="text-align: left; font-size:50px; font-style:bold;">Diákok</p>
+            <br>
             <p id="classInputDescription">Válassza ki a diákok csoportnevét a listából</p>
             <input type="text" id="kivalaszt" list="osztalyok/csop" style="float:left; color:black;" onchange="AddValue(document.getElementById('osztalyok/csop').value, document.getElementById('osztalyok/csop').text), osztalyok()" >
             <datalist name="osztalyok/csop" id="osztalyok/csop" style="float:left; color:black;" >
@@ -84,8 +85,9 @@
             <div id="left" style="margin-right: 150am; display:flex;">
 
             </div>
-            <br><br><br><br><br><br><br><br><br><br>
-            <h1 style="text-align: center;">Tanterem</h1>
+            <br><br><br><br><br><br><br>
+            <p style="text-align: left; font-size:50px; font-style:bold;">Tanterem</p>
+            <br>
             <p id="roomInputDescription">Válassza ki a megfelelő termet!</p>
             <p>Betöltés esetén válassza ki a betöltenő termet először és aztán válassaz ki a betölteni kÍvánt fájlt!</p>
             <input type="text" id="newkivalaszt"list="termek" style="float:left; color:black; " onchange="AddValue2(document.getElementById('termek').value, document.getElementById('termek').text), teremgen()">
@@ -107,6 +109,10 @@
                 <option value="terem_8">8. terem</option>
                 <option value="terem_9">9. terem</option>
                 <option value="terem_10">10. terem</option>
+                <option value="matek_1">Matek 1</option>
+                <option value="matek_3">Matek 3</option>
+                <option value="nyelvi_lab">Nyelvi Labor</option>
+
             </datalist>
             <!--<button type="button" onclick="AddValue2(document.getElementById('termek').value, document.getElementById('termek').text), teremgen()">terem kiválasztása</button>
             --><br>
@@ -131,8 +137,10 @@
             if(!Value) return;
           
 
-
-
+            let input = document.getElementById("kivalaszt");
+            let p = document.getElementById("classInputDescription");
+           // input.setAttribute("hidden","hidden");
+            p.setAttribute("hidden","hidden");
             const har = Value;
             
 
@@ -145,7 +153,10 @@
           
             if(!Value) return;
           
-
+            let input = document.getElementById("newkivalaszt");
+            let p = document.getElementById("roomInputDescription");
+           // input.setAttribute("hidden","hidden");
+            p.setAttribute("hidden","hidden");
             const har1 = Value;
             
 
@@ -175,7 +186,7 @@
                         if (preTextArray[i].trim() === "0") {
                             contentDiv = document.getElementById("content");
                             var newDiv = document.createElement("div");
-                            newDiv.textContent = " ";
+                          //  newDiv.textContent = " ";
                             newDiv.setAttribute("id","_"+hely);
                             
                             newDiv.classList.add("right");
@@ -207,9 +218,9 @@
                             newDiv.style.visibility = "hidden";
                             newDiv.style.position = "relative";
                             newDiv.style.maxHeight = "300px";  
-                            newDiv.style.paddingLeft = "150px"; 
+                            newDiv.style.paddingLeft = "40px"; 
                             newDiv.style.paddingBottom = "20px";
-                            newDiv.style.paddingRight = "150px";
+                            newDiv.style.paddingRight = "40px";
                             newDiv.classList.add("right");
                             contentDiv.appendChild(newDiv);
                         }
@@ -261,8 +272,9 @@
                                 newli.classList.add("list");
                                 newli.setAttribute("draggable", "true");;
                                 //newli.style.position = "absolute";
-                                newli.style.paddingLeft = "62px";
+                                newli.style.paddingLeft = "0px";
                                 newli.style.textAlign = "center";
+                                newli.style.overflow = "hidden"
                                // newli.style.marginRight = "700px";
                                 newli.style.width = "auto";
                                 newli.textContent = preTextArray[i];
@@ -334,13 +346,14 @@ function runScriptAgain() {
                 selected = null;
             });
         });
+
     }
 }
 
 
 const saveButton = document.getElementById("saveButton");
 const loadButton = document.getElementById("loadButton");
-
+let emptyP = document.getElementById("left");
 
 saveButton.addEventListener("click", function () {
     const rightBoxes = document.getElementsByClassName("right");
