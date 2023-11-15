@@ -163,18 +163,21 @@ body {
 
 
 .right{
-  border-color: orange;
   color: grey;
   align-self  : center;
-  background-color  : grey;
+  background-color  : hsla(0, 0%, 46%, 0.342);
   display  : inline-block;
   margin  : 15px;
-  border  : 2px solid white;
+  border  : 1px dashed ;
+  border-color: white;
+  border-radius: 10px;
   position  : relative;
   overflow  : auto;
   overflow-y  : auto;
-  max-height  : 300px;
-  width  : 17.48%;
+  max-height  : 35px;
+  width  : 10%;
   justify-content  : center;
   text-align: center;
+  height: 35px;
+  overflow: hidden;
 }
