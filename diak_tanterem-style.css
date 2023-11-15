@@ -15,6 +15,7 @@ div {
     border-style: solid;
     border: 10px;
     overflow: auto;
+    
 
 }
 *{
@@ -158,10 +159,7 @@ body{
 body {
     overflow-y: auto; 
 }
-div{
-  height: auto;
-  width: auto;
-}
+
 
 
 .right{
