@@ -1,5 +1,10 @@
 body {
     overflow-y: auto; /* Görgetés engedélyezése függőlegesen */
+    background-image: url("hatter.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 div {
@@ -35,9 +40,9 @@ div {
     justify-content: center;
 }
 
-h1 { color: white; font-family: 'Open Sans Condensed', sans-serif; font-size: 40px; font-weight: 700; line-height: 64px; margin: 0 0 0; padding: 10px 20px; text-transform: uppercase; text-align: left; }
-p { color: white; font-family: 'Open Sans', sans-serif; font-size: 12px; line-height: 28px; margin: 0 0 5px; text-align: left;}
-input{ float: left; color: white;}
+h1 { color: black; font-family: 'Open Sans Condensed', sans-serif; font-size: 40px; font-weight: 700; line-height: 64px; margin: 0 0 0; padding: 10px 20px; text-transform: uppercase; text-align: left; }
+p {  font-family: 'Open Sans', sans-serif;  line-height: 28px; margin: 0 0 5px; text-align: left; }
+input{ float: left; color: black 70% ; }
 
 .list{
     text-align: left;
@@ -60,112 +65,17 @@ a {
 body{
     width: 100%;
     height: 1000%;
-    background: #161616;
-    color: #fff;
 }
 
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box !important;
-  }
-  
-  html, body {
-    height: 100%;
-  }
-  
-  body {
-    display: table;
-    width: 100%;
-    height: 100%;
-    background-color: #171717;
-    color: #000;
-    line-height: 1.6;
-    position: relative;
-    font-family: sans-serif;
-    overflow: hidden;
-    overflow-y: auto; /* Görgetés engedélyezése függőlegesen */
-  }
-  
-  .lines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    margin: auto;
-    width: 90vw;
-  }
-  
-  .line {
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    top: 0;
-    left: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-  }
-  .line::after {
-    content: "";
-    display: block;
-    position: absolute;
-    height: 15vh;
-    width: 100%;
-    top: -50%;
-    left: 0;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
-    -webkit-animation: drop 7s 0s infinite;
-            animation: drop 7s 0s infinite;
-    -webkit-animation-fill-mode: forwards;
-            animation-fill-mode: forwards;
-    -webkit-animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
-            animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
-  }
-  .line:nth-child(1) {
-    margin-left: -25%;
-  }
-  .line:nth-child(1)::after {
-    -webkit-animation-delay: 2s;
-            animation-delay: 2s;
-  }
-  .line:nth-child(3) {
-    margin-left: 25%;
-  }
-  .line:nth-child(3)::after {
-    -webkit-animation-delay: 2.5s;
-            animation-delay: 2.5s;
-  }
-  
-  @-webkit-keyframes drop {
-    0% {
-      top: -50%;
-    }
-    100% {
-      top: 110%;
-    }
-  }
-  
-  @keyframes drop {
-    0% {
-      top: -50%;
-    }
-    100% {
-      top: 110%;
-    }
-  }
 
-body {
-    overflow-y: auto; 
-}
 
 
 
 .right{
   color: grey;
   align-self  : center;
-  background-color  : hsla(0, 0%, 46%, 0.342);
+  background-color  : hsla(0, 0%, 46%, 0.8);
   display  : inline-block;
   margin  : 15px;
   border  : 1px dashed ;
@@ -180,4 +90,11 @@ body {
   text-align: center;
   height: 35px;
   overflow: hidden;
+}
+
+.list:hover{
+    color: rgb(238, 195, 114);
+}
+.biglist:hover{
+    color: rgb(253, 6, 253);
 }
