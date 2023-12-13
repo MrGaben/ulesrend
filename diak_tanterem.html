@@ -114,9 +114,11 @@
                 <option value="nyelvi_lab">Nyelvi Labor</option>
 
             </datalist>
+
             <select name="har" id="har" onchange="AddValue2(document.getElementById('har').value, document.getElementById('har').text), teremgen()" hidden>
                 <option value="nem">nem</option>
             </select>
+            <div id="cimz"></div>
             <!--<button type="button" onclick="AddValue2(document.getElementById('termek').value, document.getElementById('termek').text), teremgen()">terem kiválasztása</button>
             --><br>
                 <!-- Select options here -->
@@ -496,12 +498,16 @@ loadButton.addEventListener("click", function () {
         const file = fileInput.files[0];
         let har = file.name;
         let what = har.split('_');
+        visszair = document.createElement("h3")
+        cimz = document.getElementById("cimz");
+        csoport = what[0];
         what = what[1].split('.');
         if (what[0].includes('('))
         {
             console.log(what = what[0].split(' '));
-            console.log("fasz");
         }
+        visszair.innerHTML = " "+csoport +"  "+ what[0];
+        cimz.appendChild(visszair);
         what = what[0]
         let teremhely = document.getElementById("har");
         let optionGen = document.createElement("option");
