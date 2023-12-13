@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     
     <link rel="stylesheet" href="diak_tanterem-style.css">
-
+    <script src="filesaver.js"></script>
 </head>
 <body>
 
@@ -114,9 +114,13 @@
                 <option value="nyelvi_lab">Nyelvi Labor</option>
 
             </datalist>
+            <select name="har" id="har" onchange="AddValue2(document.getElementById('har').value, document.getElementById('har').text), teremgen()" hidden>
+                <option value="nem">nem</option>
+            </select>
             <!--<button type="button" onclick="AddValue2(document.getElementById('termek').value, document.getElementById('termek').text), teremgen()">terem kiválasztása</button>
             --><br>
-
+                <!-- Select options here -->
+            </select>
             <br>    
             <div class="line"></div>
             <div id="content"></div>
@@ -131,6 +135,12 @@
                           
 
     <script>
+        function handleInputChange() {
+            AddValue(document.getElementById('kivalaszt').value, document.getElementById('kivalaszt').text);
+            osztalyok();
+        }
+
+        
         function AddValue(){
             const Value = document.querySelector('#kivalaszt').value;
           
@@ -151,7 +161,7 @@
           function AddValue2(){
             const Value = document.querySelector('#newkivalaszt').value;
           
-            if(!Value) return;
+            if(Value == null) {const Value = document.getElementById("har");};
           
             let input = document.getElementById("newkivalaszt");
             let p = document.getElementById("roomInputDescription");
@@ -163,15 +173,13 @@
             return har1;
           }
           let ulesszam = 0;
-        function teremgen(){
+        function teremgen(a){
         $(function newfile(){
-            let teremnev = AddValue2()
-            if(teremnev != null){
-                teremnev = AddValue2()
-                $('#content').empty();
+            let b = AddValue2()
+            if(b == ""){
             $.ajax({
                 
-                url: teremnev+".csv", 
+                url: a+".csv", 
                 async: false,   
                 cache: false,   
                 dataType: "text",  
@@ -232,8 +240,73 @@
             }
         );
             }
-        });
-        };
+            else{
+                a = AddValue2();
+            $.ajax({
+                
+                url: a+".csv", 
+                async: false,   
+                cache: false,   
+                dataType: "text",  
+                success: function( data, textStatus, jqXHR ) {
+                    var resourceContent = data;
+                    var preText = resourceContent;
+                    var preTextArray = preText.split(';');
+
+                    let hely = 1;
+
+                    for (let i = 0; i < preTextArray.length; i++) {
+                        if (preTextArray[i].trim() === "0") {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                          //  newDiv.textContent = " ";
+                            newDiv.setAttribute("id","_"+hely);
+                            
+                            newDiv.classList.add("right");
+                            hely++;
+                            ulesszam++;
+                            contentDiv.appendChild(newDiv);
+                        } else if (preTextArray[i].trim() === "1") {
+
+                            var newDiv = document.createElement("br");
+
+                            contentDiv.appendChild(newDiv);
+                        }
+                        else if (preTextArray[i].trim() === "null") {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                            newDiv.style.padding = "30px";
+                            newDiv.style.display = "inline-block";
+                            newDiv.style.margin = "10px";
+
+                            contentDiv.appendChild(newDiv);
+                        }
+                        else if (preTextArray[i].trim() === "2")
+                        {
+                            contentDiv = document.getElementById("content");
+                            var newDiv = document.createElement("div");
+                            newDiv.style.backgroundColor = "#0c0d13";
+                            newDiv.style.display = "inline-block";  
+                            newDiv.style.margin = "15px";
+                            newDiv.style.paddingTop = "20px";
+                            newDiv.style.visibility = "hidden";
+                            newDiv.style.position = "relative";
+                            newDiv.style.maxHeight = "300px";  
+                            newDiv.style.paddingLeft = "40px"; 
+                            newDiv.style.paddingBottom = "20px";
+                            newDiv.style.paddingRight = "40px";
+                            newDiv.classList.add("right");
+                            contentDiv.appendChild(newDiv);
+                        }
+                        runScriptAgain();
+                    }
+                }
+
+            }
+        );
+            }
+            }
+        ,)}
         function osztalyok(){
             $(function newfile(){
                 let osztaly = AddValue()
@@ -382,21 +455,66 @@ saveButton.addEventListener("click", function () {
 
     const csoportnev = AddValue();
     const teremnev = AddValue2();
-
     a.download = csoportnev + "_" + teremnev + ".csv";
 
     document.body.appendChild(a);
     a.href = url;
     a.click();
+    saveAs(blob, a.download)
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+
+
+
 });
+(function(Element, undefined){
+    var _setAttribute = Element.prototype.setAttribute;
+ 
+    Element.prototype.setAttribute = function(attrName, attrValue){
+        if (this.hasAttribute(attrName)) {
+            if (attrValue !== undefined) {
+                _setAttribute.call(this, attrName, attrValue);
+            }
+            //do nothing if attr exists and action is to create
+        }
+        else {
+            _setAttribute.call(this, attrName, (attrValue === undefined ? '' : attrValue));
+        }
+    }
+})(Element);
+var sleepSetTimeout_ctrl;
+
+function sleep(ms) {
+    clearInterval(sleepSetTimeout_ctrl);
+    return new Promise(resolve => sleepSetTimeout_ctrl = setTimeout(resolve, ms));
+}
 loadButton.addEventListener("click", function () {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = ".csv";
     fileInput.addEventListener("change", function () {
         const file = fileInput.files[0];
+        let har = file.name;
+        let what = har.split('_');
+        what = what[1].split('.');
+        if (what[0].includes('('))
+        {
+            console.log(what = what[0].split(' '));
+            console.log("fasz");
+        }
+        what = what[0]
+        let teremhely = document.getElementById("har");
+        let optionGen = document.createElement("option");
+        optionGen.value = what;
+        optionGen.selected = true;
+        teremhely.appendChild(optionGen); 
+        teremgen(what);  
+        $(document).ready(function(){
+            setTimeout(function(){
+                hellyeah()
+            },500);
+            });
+            function hellyeah(){
         if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -407,7 +525,7 @@ loadButton.addEventListener("click", function () {
                     const studentData = dataToLoad[i];
                     if (studentData) {
                         const rightBox = rightBoxes[i];
-                        rightBox.innerHTML = ""; // Clear existing content
+                        rightBox.innerHTML = ""; 
 
                         studentData.forEach(student => {
                             const newLi = document.createElement("p");
@@ -425,8 +543,10 @@ loadButton.addEventListener("click", function () {
             };
             reader.readAsText(file);
         }
-    });
+    }});
+    
     fileInput.click();
+    
 });
 
             
